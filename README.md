@@ -54,7 +54,7 @@ Przy OIDC nie potrzeba stałego sekretu JSON. Nie zapisuj poświadczeń w repo. 
 
 ## GitHub Actions
 
-Workflow `Scrape IT jobs`: ręcznie z opcją zapisu do Sheets albo co 2 h o minucie 17 (UTC). Harmonogram działa z domyślnej gałęzi i może się opóźniać. Dopóki `SCRAPER_ENABLED` nie jest `true`, harmonogram pomija zadanie. Ręczne uruchomienie domyślnie generuje tylko artefakt CSV/JSON.
+Workflow `Scrape IT jobs`: ręcznie z opcją zapisu do Sheets albo co 2 dni o 06:17 UTC (07:17 zimą / 08:17 latem w Polsce), licząc od 27.10.2026. Codzienny trigger sprawdza parzystość liczby dni; w dni pomiędzy pobieranie jest pomijane. Dzięki temu odstęp pozostaje równy 2 dni także na granicach miesięcy. Harmonogram działa z domyślnej gałęzi i może się opóźniać. Dopóki `SCRAPER_ENABLED` nie jest `true`, harmonogram pomija zadanie. Ręczne uruchomienie domyślnie generuje tylko artefakt CSV/JSON.
 
 Workflow nie nadpisuje ręcznych statusów, rozmów, terminów ani notatek: dopisuje wyłącznie nowe wiersze. Tworzy dedykowane zakładki `Oferty` i `Historia uruchomień`; przy niezgodnym nagłówku zatrzymuje zapis. Inne zakładki pozostają bez zmian. Nagłówki odpowiadają dostarczonemu wzorowi, z dodatkowymi kolumnami wyjaśnienia i lokalizacji. Formatowanie wizualne arkusza pozostaje kolejnym etapem.
 
