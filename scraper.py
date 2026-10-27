@@ -174,11 +174,13 @@ class Sheets:
         if operations:
             self.api.batchUpdate(spreadsheetId=self.id,body={'requests':operations}).execute()
         for title, header in [('Oferty',HEADERS),('Historia uruchomień',['Czas UTC','Źródło','Status','Szczegóły'])]:
-            existing = self.read(f"'{title}'!A1:S1")
+            existing = self.read(f"'{title}'!1:1")
             if not existing:
                 self.append(title,[header])
-            elif existing[0] != header:
+            elif existing[0] != header and (title != 'Oferty' or len(existing[0]) != len(header) or set(existing[0]) != set(header)):
                 raise RuntimeError('Niezgodny nagłówek: ' + title + '. Zapis zatrzymany dla ochrony danych.')
+            if title == 'Oferty':
+                self.offer_headers = existing[0] if existing else HEADERS
 
     def load_profile(self):
         tabs = self.api.get(spreadsheetId=self.id).execute()['sheets']
@@ -196,6 +198,9 @@ class Sheets:
                 {'updateDimensionProperties':{'range':{'sheetId':sheet_id,'dimension':'COLUMNS','startIndex':9,'endIndex':10},'properties':{'pixelSize':520},'fields':'pixelSize'}},
                 {'setBasicFilter':{'filter':{'range':{'sheetId':sheet_id,'startRowIndex':0,'endRowIndex':len(rows),'startColumnIndex':0,'endColumnIndex':10}}}},
             ]
+            widths = [90,180,240,140,70,90,110,85,90,460]
+            for col, width in enumerate(widths):
+                requests_.append({'updateDimensionProperties':{'range':{'sheetId':sheet_id,'dimension':'COLUMNS','startIndex':col,'endIndex':col+1},'properties':{'pixelSize':width},'fields':'pixelSize'}})
             for col, choices in [(0,['ustawienie','rola','skill','własne','instrukcja']),(7,['TAK','NIE']),(8,['tytuł','całość'])]:
                 requests_.append({'setDataValidation':{'range':{'sheetId':sheet_id,'startRowIndex':1,'startColumnIndex':col,'endColumnIndex':col+1},'rule':{'condition':{'type':'ONE_OF_LIST','values':[{'userEnteredValue':v} for v in choices]},'strict':True,'showCustomUi':True}}})
             self.api.batchUpdate(spreadsheetId=self.id,body={'requests':requests_}).execute()
@@ -206,10 +211,14 @@ class Sheets:
         return self.api.values().get(spreadsheetId=self.id,range=range_).execute().get('values',[])
 
     def known(self):
-        return {canonical(r[0]) for r in self.read("'Oferty'!D2:D") if r and r[0]}
+        index = self.offer_headers.index('Link')
+        return {canonical(r[index]) for r in self.read("'Oferty'!A2:ZZ") if len(r) > index and r[index]}
 
     def append(self, title, rows):
         if rows:
+            if title == 'Oferty' and rows[0] != HEADERS:
+                order = getattr(self, 'offer_headers', HEADERS)
+                rows = [[dict(zip(HEADERS,row)).get(name,'') for name in order] for row in rows]
             self.api.values().append(spreadsheetId=self.id,range=f"'{title}'!A1",valueInputOption='RAW',insertDataOption='INSERT_ROWS',body={'values':rows}).execute()
 
 

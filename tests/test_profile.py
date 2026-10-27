@@ -2,7 +2,7 @@ import copy
 import unittest
 from unittest.mock import MagicMock
 from candidate_profile import default_rows, parse_profile, rank_keywords, aliases_match
-from scraper import Sheets
+from scraper import Sheets, HEADERS
 
 class ProfileTests(unittest.TestCase):
     def test_sheet_weight_and_level_change_score(self):
@@ -54,6 +54,16 @@ class ProfileTests(unittest.TestCase):
         sheet.load_profile()
         sheet.append.assert_not_called()
         sheet.api.batchUpdate.assert_not_called()
+
+    def test_reordered_offer_columns_are_mapped_by_name(self):
+        sheet=Sheets.__new__(Sheets);sheet.api=MagicMock();sheet.id='example'
+        sheet.offer_headers=HEADERS.copy()
+        sheet.offer_headers.remove('Match');sheet.offer_headers.insert(5,'Match')
+        row=['']*len(HEADERS);row[HEADERS.index('Match')]='75%';row[HEADERS.index('Wysłano CV')]='2026-10-27'
+        sheet.append('Oferty',[row])
+        values=sheet.api.values.return_value.append.call_args.kwargs['body']['values'][0]
+        self.assertEqual(values[5],'75%')
+        self.assertEqual(values[6],'2026-10-27')
 
     def test_later_rows_are_read(self):
         rows=default_rows()+[[''] for _ in range(1000)]

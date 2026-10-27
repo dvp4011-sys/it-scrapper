@@ -67,9 +67,10 @@ def default_rows():
       ('skill','Jetpack Compose','jetpack compose',10,'?'),
     ]
     for kind,name,aliases,weight,level in skills:
-        rows.append([kind,name,aliases,'',weight,level,'','TAK','całość','Poziom pusty = doświadczenie potwierdzone, poziom nieoceniony (75% wagi). ? = niepotwierdzone (0 punktów). 0 = brak, 1 podstawy, 2 praktyczny, 3 dobry, 4 zaawansowany, 5 ekspert. Lata: opcjonalne, bez zgadywania.'])
+        rows.append([kind,name,aliases,'',weight,level,'','TAK','całość','Niepotwierdzona znajomość — uzupełnij poziom.' if level == '?' else 'Potwierdzone doświadczenie; uzupełnij poziom i lata.'])
     for name,aliases in [('CI/CD','ci/cd|continuous integration'),('SOLID','solid'),('Clean Architecture','clean architecture'),('REST API','rest|restful'),('Agile / Scrum','agile|scrum')]:
         rows.append(['skill',name,aliases,'',5,'?','','NIE','całość','Przykładowe hasło rekrutacyjne. Włącz i uzupełnij własny poziom, jeśli dotyczy.'])
+    rows.append(['instrukcja','Skala poziomów','','','','','','','','Pusty = potwierdzone bez oceny (75% wagi); ? = niepotwierdzone (0 pkt). 0 brak; 1 podstawy; 2 praktyczny; 3 dobry; 4 zaawansowany; 5 ekspert. Punkty = waga × poziom / 5.'])
     rows.append(['instrukcja','Jak dopisywać','','','','','','','','Dopisz wiersz typu skill, własne lub rola. Aliasy rozdziel |; waga 0–100; aktywne TAK/NIE; zakres tytuł lub całość. Nie zmieniaj nagłówków. Wagi wpływają na kolejne oceny; istniejące oferty nie są przeliczane.'])
     return rows
 
