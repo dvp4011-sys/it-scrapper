@@ -1,0 +1,4 @@
+requests==2.34.2
+beautifulsoup4==4.15.0
+google-auth==2.62.0
+google-api-python-client==2.201.0

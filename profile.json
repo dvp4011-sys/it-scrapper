@@ -1,0 +1,8 @@
+{
+ "experience_since":2016,
+ "confirmed":["Xamarin.Forms","Xamarin.Android","Android Java","PAX","POS","drukarki","płatności kartą","aplikacje na zegarki"],
+ "unconfirmed":["Kotlin",".NET MAUI","C#","Wear OS","Jetpack Compose"],
+ "city":"Rzeszów", "remote":true, "minimum_monthly_pln":10000,
+ "hourly_month_hours":160, "minimum_score":25,
+ "salary_assumption":"UoP brutto / B2B netto na fakturze — do potwierdzenia; brak widełek nie wyklucza"
+}

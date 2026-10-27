@@ -1,0 +1,6 @@
+[
+ {"name":"justjoinit","enabled":true,"pages":["https://justjoin.it/job-offers/all-locations/mobile","https://justjoin.it/job-offers/all-locations/net"],"pattern":"/job-offer/"},
+ {"name":"nofluffjobs","enabled":true,"pages":["https://nofluffjobs.com/pl/mobile"],"pattern":"/job/"},
+ {"name":"pracuj","enabled":true,"pages":["https://www.pracuj.pl/praca/android;kw","https://www.pracuj.pl/praca/xamarin;kw"],"pattern":"/praca/"},
+ {"name":"linkedin","enabled":false,"pages":[],"pattern":"/jobs/view/","reason":"Osobny etap; bez logowania i omijania blokad"}
+]
