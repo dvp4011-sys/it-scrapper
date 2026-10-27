@@ -1,8 +1,240 @@
 {
- "experience_since":2016,
- "confirmed":["Xamarin.Forms","Xamarin.Android","Android Java","PAX","POS","drukarki","płatności kartą","aplikacje na zegarki"],
- "unconfirmed":["Kotlin",".NET MAUI","C#","Wear OS","Jetpack Compose"],
- "city":"Rzeszów", "remote":true, "minimum_monthly_pln":10000,
- "hourly_month_hours":160, "minimum_score":25,
- "salary_assumption":"UoP brutto / B2B netto na fakturze — do potwierdzenia; brak widełek nie wyklucza"
+  "city": "Rzeszów",
+  "remote": true,
+  "minimum_monthly_pln": 10000.0,
+  "hourly_month_hours": 160.0,
+  "minimum_score": 15.0,
+  "experience_since": 2016.0,
+  "keep_unknown_salary": true,
+  "rules": [
+    {
+      "name": "Xamarin.Forms",
+      "aliases": [
+        "xamarin.forms",
+        "xamarin forms",
+        "xamarin"
+      ],
+      "scope": "całość",
+      "weight": 40.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Xamarin.Android",
+      "aliases": [
+        "xamarin.android",
+        "xamarin android"
+      ],
+      "scope": "całość",
+      "weight": 30.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Android",
+      "aliases": [
+        "android"
+      ],
+      "scope": "całość",
+      "weight": 25.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Java",
+      "aliases": [
+        "java"
+      ],
+      "scope": "całość",
+      "weight": 15.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "PAX",
+      "aliases": [
+        "pax"
+      ],
+      "scope": "całość",
+      "weight": 15.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "POS / terminale",
+      "aliases": [
+        "pos",
+        "point of sale",
+        "terminal",
+        "terminale",
+        "terminali",
+        "terminals"
+      ],
+      "scope": "całość",
+      "weight": 10.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Płatności kartą",
+      "aliases": [
+        "card payment",
+        "card payments",
+        "payment",
+        "payments",
+        "płatności",
+        "płatnościami",
+        "card acquiring"
+      ],
+      "scope": "całość",
+      "weight": 5.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Drukarki",
+      "aliases": [
+        "printer",
+        "printers",
+        "drukarka",
+        "drukarki",
+        "drukarek"
+      ],
+      "scope": "całość",
+      "weight": 5.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Aplikacje na zegarki",
+      "aliases": [
+        "smartwatch",
+        "smartwatches",
+        "wearable",
+        "wearables",
+        "zegarki"
+      ],
+      "scope": "całość",
+      "weight": 5.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Kotlin",
+      "aliases": [
+        "kotlin"
+      ],
+      "scope": "całość",
+      "weight": 15.0,
+      "level": null,
+      "years": null
+    },
+    {
+      "name": ".NET MAUI",
+      "aliases": [
+        ".net maui",
+        "maui"
+      ],
+      "scope": "całość",
+      "weight": 15.0,
+      "level": null,
+      "years": null
+    },
+    {
+      "name": "C#",
+      "aliases": [
+        "c#",
+        "csharp"
+      ],
+      "scope": "całość",
+      "weight": 10.0,
+      "level": null,
+      "years": null
+    },
+    {
+      "name": "Wear OS",
+      "aliases": [
+        "wear os"
+      ],
+      "scope": "całość",
+      "weight": 10.0,
+      "level": null,
+      "years": null
+    },
+    {
+      "name": "Jetpack Compose",
+      "aliases": [
+        "jetpack compose"
+      ],
+      "scope": "całość",
+      "weight": 10.0,
+      "level": null,
+      "years": null
+    }
+  ],
+  "roles": [
+    {
+      "name": "Android Developer",
+      "aliases": [
+        "android"
+      ],
+      "scope": "tytuł",
+      "weight": 0.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Xamarin Developer",
+      "aliases": [
+        "xamarin"
+      ],
+      "scope": "tytuł",
+      "weight": 0.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "Mobile Developer",
+      "aliases": [
+        "mobile",
+        "mobilny",
+        "mobilnych"
+      ],
+      "scope": "tytuł",
+      "weight": 0.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "MAUI Developer",
+      "aliases": [
+        "maui"
+      ],
+      "scope": "tytuł",
+      "weight": 0.0,
+      "level": "confirmed",
+      "years": null
+    },
+    {
+      "name": "POS / płatności",
+      "aliases": [
+        "pos",
+        "pax",
+        "payment",
+        "payments",
+        "płatności"
+      ],
+      "scope": "tytuł",
+      "weight": 0.0,
+      "level": "confirmed",
+      "years": null
+    }
+  ],
+  "unconfirmed": [
+    "Kotlin",
+    ".NET MAUI",
+    "C#",
+    "Wear OS",
+    "Jetpack Compose"
+  ]
 }

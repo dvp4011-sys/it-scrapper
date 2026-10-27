@@ -4,7 +4,7 @@ Python 3.12, publiczny HTML, GitHub Actions i Google Sheets. Bez API portali ofe
 
 ## Profil
 
-`profile.json`: doświadczenie od 2016, Xamarin.Forms, Xamarin.Android, Android Java, POS/PAX, drukarki i płatności kartą. Rzeszów stacjonarnie/hybrydowo lub zdalnie. UoP/B2B, próg 10 000 PLN/mies. Założenie do potwierdzenia: UoP brutto, B2B netto na fakturze. Parser zachowuje oryginalną jednostkę i formę z ogłoszenia; nie wylicza wynagrodzenia na rękę.
+W trybie zapisu do Sheets profil jest odczytywany z karty **Profil**, przy każdym uruchomieniu. `profile.json` to kopia startowa do pracy offline. Doświadczenie od 2016, Xamarin.Forms, Xamarin.Android, Android Java, POS/PAX, drukarki i płatności kartą. Rzeszów stacjonarnie/hybrydowo lub zdalnie. UoP/B2B, próg 10 000 PLN/mies. Założenie do potwierdzenia: UoP brutto, B2B netto na fakturze. Parser zachowuje oryginalną jednostkę i formę z ogłoszenia; nie wylicza wynagrodzenia na rękę.
 
 Widełki przechodzą filtr, gdy ich górny koniec osiąga próg. Stawka godzinowa: orientacyjnie 160 h/mies. Brak widełek, obca waluta lub nieznana jednostka oznaczają weryfikację, a nie odrzucenie. To punktacja słów kluczowych, nie analiza CV przez AI ani prawdopodobieństwo zatrudnienia. Kotlin, MAUI, C#, Wear OS i Compose są niepotwierdzone. Staż nie jest automatycznym dowodem seniority.
 
@@ -67,3 +67,23 @@ Błąd choćby jednego źródła powoduje czerwony status workflow po zapisaniu 
 ## Następne etapy
 
 Pełna paginacja i kontrola pokrycia, trwała pamięć odrzuconych ofert, odświeżanie ogłoszeń, duplikaty między portalami, profil z CV, precyzyjne wymagania i luki, formatowanie arkusza. Sugestie do CV wyłącznie po potwierdzeniu doświadczenia — kolumna jest obecnie celowo pusta.
+
+
+## Edycja profilu w arkuszu
+
+Karta **Profil** jest źródłem konfiguracji dla harmonogramu i ręcznych uruchomień z `write_sheets=true`. Przy pierwszym uruchomieniu jest zakładana i wypełniana danymi startowymi; istniejąca karta nigdy nie jest resetowana. Zmiany obowiązują od następnego uruchomienia. Bez zapisu do Sheets domyślnie używany jest lokalny `profile.json`; do próby z profilem arkusza bez zapisu ofert: `python scraper.py --profile-source sheets`.
+
+Kolumny: Typ, Nazwa, Hasła / aliasy (|), Wartość, Waga, Poziom 0–5, Lata doświadczenia, Aktywne, Zakres, Uwagi.
+
+- `ustawienie`: miasto (kilka miast rozdziel `|`), zdalność TAK/NIE, minimum PLN, godziny miesięcznie, próg Match, rok rozpoczęcia doświadczenia i zachowanie ofert bez widełek.
+- `rola`: kwalifikuje ofertę po hasłach w tytule lub całości, według kolumny Zakres. Nie dodaje punktów.
+- `skill` lub `własne`: własne hasła, skille, domeny i integracje sprzętowe. Oba typy są oceniane tak samo. Dopisuj nowe wiersze także poniżej przykładów; odczytywane jest całe A:J.
+- Waga 0–100 określa znaczenie trafienia. Poziom: 0 brak znajomości, 1 podstawy, 2 praktyczny, 3 dobry, 4 zaawansowany, 5 ekspert. Punkty = waga × poziom / 5. Pusty poziom oznacza potwierdzone doświadczenie bez oceny poziomu (75% wagi). `?` oznacza niepotwierdzony skill (zero punktów i wpis w Lukach, jeśli wystąpi w ofercie).
+- Lata przy skillu są opcjonalnym opisem stażu kandydata i pojawiają się w uzasadnieniu trafienia. Nie są automatycznie porównywane z wymaganiem konkretnej technologii w ogłoszeniu; parser nie potrafi tego wiarygodnie ustalić. Rok 2016 dotyczy łącznego doświadczenia. Nie przypisujemy tego stażu wszystkim skillom. Jawne wymagania większego stażu ogólnego są oznaczane do sprawdzenia.
+- Match to suma punktów ograniczona do 95, nadal prezentowana w istniejącej kolumnie procentowej dla zgodności układu. Nie jest znormalizowanym procentem spełnionych wymagań ani szansą zatrudnienia. Alias lub skill może wystąpić w wymaganiu opcjonalnym albo negacji; ocena wymaga przeczytania oferty.
+- Nowy startowy próg Match to 15 punktów, zamiast dawnych 25: nieocenione poziomy mają teraz mnożnik 75%. Potwierdzone skille mają puste poziomy i lata; skille niewskazane przez kandydata mają `?`. Przykłady CI/CD, SOLID, Clean Architecture, REST i Agile są wyłączone do samodzielnego uzupełnienia.
+- Hasła są literalne, rozdzielane `|`; bez wykonywania regexu lub kodu z arkusza. Java nie trafia w JavaScript, POS nie trafia w position. Odmiany językowe trzeba wpisać jako aliasy.
+- Zmiana profilu nie przelicza starych ofert, nie zmienia ręcznych statusów i nie rozszerza list stron źródłowych: aktualnie listy mobile/.NET oraz Android/Xamarin. Zmiana roli na inny obszar IT wymaga też rozszerzenia `sources.json`.
+- Błędny nagłówek, duplikat aktywnej nazwy, niepoprawna liczba lub brak obowiązkowego ustawienia zatrzymuje uruchomienie z numerem wiersza. Brak dostępu do karty nie uruchamia cichego powrotu do starego profilu JSON.
+
+Opcja ręcznego workflow `init_profile_only=true` tworzy lub waliduje kartę Profil bez pobierania ofert. Ustawienia wymagające zmiany OIDC lub uprawnień Google nie są częścią profilu.
