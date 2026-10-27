@@ -2,6 +2,10 @@ name: Scrape IT jobs
 on:
   workflow_dispatch:
     inputs:
+      max_details:
+        description: Maksymalna liczba szczegółów na źródło
+        type: number
+        default: 100
       write_sheets:
         description: Zapisz do Google Sheets (wymaga konfiguracji Google)
         type: boolean
@@ -21,6 +25,7 @@ jobs:
     timeout-minutes: 35
     env:
       GOOGLE_SHEET_ID: ${{ vars.GOOGLE_SHEET_ID }}
+      MAX_DETAILS: ${{ inputs.max_details || 100 }}
       WRITE_SHEETS: ${{ github.event_name == 'schedule' || inputs.write_sheets }}
     steps:
       - uses: actions/checkout@v4
@@ -41,7 +46,7 @@ jobs:
         run: |
           args=()
           if [[ "$WRITE_SHEETS" == "true" ]]; then args+=(--write-sheets); fi
-          python scraper.py "${args[@]}"
+          python scraper.py --max-details "$MAX_DETAILS" "${args[@]}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

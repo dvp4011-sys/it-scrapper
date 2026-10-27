@@ -180,6 +180,15 @@ class Sheets:
             self.api.values().append(spreadsheetId=self.id,range=f"'{title}'!A1",valueInputOption='RAW',insertDataOption='INSERT_ROWS',body={'values':rows}).execute()
 
 
+
+def offer_links(soup, page, source):
+    links = [canonical(urljoin(page,a['href'])) for a in soup.select('a[href]') if source['pattern'] in a['href']]
+    listing_urls = {canonical(p) for p in source['pages']}
+    links = [u for u in links if urlsplit(u).netloc == urlsplit(page).netloc and u not in listing_urls]
+    if source['name'] == 'pracuj':
+        links = [u for u in links if ',oferta,' in u]
+    return links
+
 def run(args):
     profile = json.loads(Path(args.profile).read_text(encoding='utf-8-sig'))
     sources = json.loads(Path(args.sources).read_text(encoding='utf-8-sig'))
@@ -194,8 +203,7 @@ def run(args):
         for page in source['pages']:
             try:
                 soup = BeautifulSoup(fetcher.get(page),'html.parser')
-                links = [canonical(urljoin(page,a['href'])) for a in soup.select('a[href]') if source['pattern'] in a['href']]
-                links = [u for u in links if urlsplit(u).netloc == urlsplit(page).netloc]
+                links = offer_links(soup, page, source)
                 if not links:
                     raise RuntimeError('Brak ofert w HTML: zmiana strony lub wymagany JavaScript')
                 urls.extend(links)

@@ -1,7 +1,8 @@
 import copy
 import unittest
 from unittest.mock import MagicMock
-from scraper import canonical, evaluate, parse_offer, postings, Sheets
+from scraper import canonical, evaluate, parse_offer, postings, Sheets, offer_links
+from bs4 import BeautifulSoup
 
 PROFILE = {'city':'Rzeszów','remote':True,'minimum_monthly_pln':10000,'hourly_month_hours':160,'minimum_score':25,'unconfirmed':['Kotlin']}
 BASE = {'title':'Android Java Developer','description':'PAX POS printers payment Kotlin','jobLocationType':'TELECOMMUTE','hiringOrganization':{'name':'Example'},'baseSalary':{'currency':'PLN','value':{'minValue':80,'maxValue':100,'unitText':'HOUR'}}}
@@ -11,6 +12,11 @@ class ScraperTests(unittest.TestCase):
         data = copy.deepcopy(BASE)
         data.update(updates)
         return parse_offer(data,'https://example.com/job/1?promo=one','test')
+
+    def test_pracuj_listing_links_excluded(self):
+        source = {'name':'pracuj','pattern':'/praca/','pages':['https://www.pracuj.pl/praca/android;kw']}
+        soup = BeautifulSoup('<a href="/praca/android;kw">search</a><a href="/praca/android,oferta,123">job</a><a href="https://other.com/praca/x,oferta,456">foreign</a>', 'html.parser')
+        self.assertEqual(offer_links(soup,source['pages'][0],source), ['https://www.pracuj.pl/praca/android,oferta,123'])
 
     def test_nested_json_ld(self):
         html = '<script type="application/ld+json">{"@graph":[{"@type":["JobPosting"],"title":"Android"}]}</script>'
